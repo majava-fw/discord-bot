@@ -12,7 +12,7 @@ _[Majava Framework](//github.com/majava-fw)_
     <a href="//java.com"><img src="https://img.shields.io/badge/java-8-orange"></a>
 </p>
 
-Java framework improving your experience developing any project in java.
+Java extension for Majava to simplify the creation of global discord bots.
 
 ## Summary
 1. [Installation](#installation)
@@ -58,6 +58,24 @@ dependencies {
 ```
 
 ## How to use
+First you need to set up [Discord Module](//github.com/majava-fw/discord).<br>
+Next, you need to tell the annotation loader in what package are your commands located.<br>
+Example config:
+```yaml
+modules:
+    discord: tech.majava.discord.DiscordModule
+    commands: tech.majava.discord.commands.CommandsModule
+    global-bot: tech.majava.discord.bots.global.GlobalBotModule
+discord:
+    token: ...
+global-bot:
+    namespace: cz.majksa.commands
+    production: false # if true, commands are registered globally (can take some time for discord to update)
+```
+Then you need to add all commands to the container.
+You can do this by either creating a new Module and adding it to the Container manually or by using a Dependency Injection library.
+
+### How to set up a command with annotations
 
 ## Built With
 
