@@ -213,7 +213,7 @@ bot:
             deny:
                 roles: [ ]
                 users: [ ]
-        # this is the default group. these permissions will be applied to all commands without a group
+
         admins:
             allow:
                 roles: [ 764204633597018174 ]
