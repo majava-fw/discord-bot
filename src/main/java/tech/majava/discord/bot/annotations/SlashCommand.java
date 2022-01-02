@@ -1,6 +1,6 @@
 /*
- *  global-bot - tech.majava.discord.bots.global.annotations.GlobalCommand
- *  Copyright (C) 2021  Majksa
+ *  global-bot - tech.majava.discord.bots.annotations.GlobalCommand
+ *  Copyright (C) 2022  Majksa
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package tech.majava.discord.bots.global.annotations;
+package tech.majava.discord.bot.annotations;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.ElementType;
@@ -25,7 +25,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p><b>Annotation {@link GlobalSubcommand}</b></p>
+ * <p><b>Annotation {@link SlashCommand}</b></p>
  *
  * @author majksa
  * @version 1.0.0
@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GlobalSubcommand {
+public @interface SlashCommand {
 
     @Nonnull
     String name();
@@ -41,10 +41,6 @@ public @interface GlobalSubcommand {
     @Nonnull
     String description();
 
-    @Nonnull
-    String parentCommand();
-
-    @Nonnull
-    String parentGroup() default "";
+    boolean defaultPermission() default true;
 
 }

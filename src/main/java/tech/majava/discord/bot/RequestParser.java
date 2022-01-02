@@ -1,6 +1,6 @@
 /*
- *  discord - tech.majava.discord.commands.request.RequestInjector
- *  Copyright (C) 2021  Majksa
+ *  global-bot - tech.majava.discord.bots.RequestParser
+ *  Copyright (C) 2022  Majksa
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package tech.majava.discord.bots.global;
+package tech.majava.discord.bot;
 
 import com.google.common.base.CaseFormat;
 import lombok.Data;
@@ -28,17 +28,18 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import tech.majava.discord.bots.global.annotations.Option;
+import tech.majava.discord.bot.annotations.Option;
 import tech.majava.discord.commands.Command;
 import tech.majava.discord.commands.io.Request;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * <p><b>Class {@link tech.majava.discord.bots.global.RequestParser}</b></p>
+ * <p><b>Class {@link RequestParser}</b></p>
  *
  * @author majksa
  * @version 1.0.0
@@ -47,13 +48,19 @@ import java.util.stream.Collectors;
 @Data
 public final class RequestParser<R extends Request> {
 
+    private static final Map<Class<? extends Request>, OptionData[]> cache = new ConcurrentHashMap<>();
+
     private final Class<R> clazz;
 
     public static OptionData[] parseOptions(@Nonnull Command<?> command) {
-        return Arrays.stream(command.getRequestClass().getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(Option.class))
-                .map(RequestParser::parseOption)
-                .toArray(OptionData[]::new);
+        final Class<? extends Request> requestClass = command.getRequestClass();
+        cache.computeIfAbsent(requestClass, unused ->
+                Arrays.stream(requestClass.getDeclaredFields())
+                        .filter(field -> field.isAnnotationPresent(Option.class))
+                        .map(RequestParser::parseOption)
+                        .toArray(OptionData[]::new)
+        );
+        return cache.get(requestClass);
     }
 
     private static OptionData parseOption(@Nonnull Field field) {
@@ -90,15 +97,6 @@ public final class RequestParser<R extends Request> {
             return OptionType.MENTIONABLE;
         }
         throw new NullPointerException();
-    }
-
-    private void check(@Nonnull Class<?> clazz, @Nonnull Class<?>... allowed) {
-        for (Class<?> aClass : allowed) {
-            if (clazz.isAssignableFrom(aClass)) {
-                return;
-            }
-        }
-        throw new IllegalArgumentException(clazz + " must implement one of the following: " + Arrays.stream(allowed).map(Class::getName).collect(Collectors.joining(", ")));
     }
 
 }

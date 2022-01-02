@@ -1,6 +1,6 @@
 /*
- *  global-bot - tech.majava.discord.bots.global.annotations.GlobalCommand
- *  Copyright (C) 2021  Majksa
+ *  discord-bot - tech.majava.discord.bot.security.PermissionConfigurator
+ *  Copyright (C) 2022  Majksa
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,28 +16,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package tech.majava.discord.bots.global.annotations;
+package tech.majava.discord.bot.security;
 
-import javax.annotation.Nonnull;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.dv8tion.jda.api.interactions.commands.Command;
+
+import java.util.Map;
 
 /**
- * <p><b>Annotation {@link tech.majava.discord.bots.global.annotations.Option}</b></p>
+ * <p><b>Class {@link tech.majava.discord.bot.security.PermissionConfigurator}</b></p>
  *
  * @author majksa
  * @version 1.0.0
  * @since 1.0.0
  */
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Option {
+public abstract class PermissionConfigurator {
 
-    @Nonnull
-    String description();
+    public void a(Map<String, Command> commands) {
 
-    boolean optional() default false;
+    }
 
 }
